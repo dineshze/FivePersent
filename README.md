@@ -2,6 +2,15 @@
 
 A responsive loan and Girvi management application built with React, Vite, Tailwind CSS, Express, MongoDB, JWT, bcrypt, and optional Cloudinary image uploads.
 
+## Project structure
+
+- `client/src/pages/` contains the authentication and dashboard pages.
+- `client/src/components/` contains shared UI and loan/customer forms.
+- `client/src/routes/AppRoutes.jsx` maps browser URLs to pages.
+- `server/src/routes/` defines API endpoints and middleware.
+- `server/src/controllers/` handles endpoint requests and responses.
+- `server/src/models/` contains MongoDB models; `config/`, `middleware/`, and `utils/` hold shared backend infrastructure.
+
 ## Requirements
 
 - Node.js 20.19+ or 22.12+
