@@ -2516,3 +2516,61 @@ tbody tr:hover {
 .landing-footer { display: flex; justify-content: space-between; padding: 20px 0; border-top: 1px solid #eef2ef; color: #9aa49e; font-size: 10px; }
 @media (max-width: 720px) { .landing-page { padding: 0 20px; }.landing-nav { height: 70px; }.landing-hero { grid-template-columns: 1fr; gap: 27px; padding: 49px 0 40px; }.landing-copy h1 { letter-spacing: -2px; }.landing-art { min-height: 300px; }.status-section { padding: 23px 19px; }.landing-features { gap: 18px; padding: 44px 0; } }
 @media (max-width: 520px) { .landing-page { padding: 0 15px; }.landing-copy h1 { font-size: 42px; }.landing-copy > p { font-size: 14px; }.landing-art { min-height: 270px; }.landing-art-chip { right: 3%; }.status-input-row { flex-direction: column; }.status-input-row .button { justify-content: center; }.status-result { align-items: flex-start; flex-direction: column; }.landing-features { grid-template-columns: 1fr; gap: 22px; }.landing-footer { gap: 12px; flex-wrap: wrap; } }
+.landing-nav {
+  width: 100%;
+  min-height: 84px;
+  height: auto;
+  gap: 16px;
+}
+.landing-nav .brand {
+  height: auto;
+  min-width: 0;
+  margin: 0;
+  gap: 10px;
+}
+.landing-nav .brand-mark {
+  flex: 0 0 30px;
+}
+.landing-nav .brand-name {
+  flex: 0 0 auto;
+}
+.landing-nav .button {
+  min-height: 39px;
+  flex: 0 0 auto;
+  padding: 0 14px;
+}
+@media (max-width: 720px) {
+  .landing-nav {
+    min-height: 70px;
+  }
+}
+@media (max-width: 380px) {
+  .landing-page {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  .landing-nav {
+    min-height: 64px;
+    gap: 8px;
+  }
+  .landing-nav .brand {
+    gap: 7px;
+  }
+  .landing-nav .brand-mark {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
+    border-radius: 8px;
+  }
+  .landing-nav .brand-name {
+    font-size: 13px;
+  }
+  .landing-nav .brand-name > span {
+    font-size: 8px;
+  }
+  .landing-nav .button {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 9px;
+  }
+}
