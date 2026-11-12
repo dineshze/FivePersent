@@ -63,9 +63,17 @@ export function CustomersPage({ customers, loans, loading, onEdit, onView }) {
                           className={tw("table-person table-person-button")}
                           onClick={() => onView(customer)}
                         >
-                          <span className={tw("person-avatar")}>
-                            {customer.name.charAt(0)}
-                          </span>
+                          {customer.photo ? (
+                            <img
+                              className={tw("person-avatar person-avatar-photo")}
+                              src={customer.photo}
+                              alt={`${customer.name} profile`}
+                            />
+                          ) : (
+                            <span className={tw("person-avatar")}>
+                              {customer.name.charAt(0)}
+                            </span>
+                          )}
                           <div>
                             <strong>{customer.name}</strong>
                             <small>Added {shortDate(customer.createdAt)}</small>

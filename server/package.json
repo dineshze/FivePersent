@@ -1,5 +1,5 @@
 {
-  "name": "five-percentage-api",
+  "name": "five-percent-api",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -7,6 +7,7 @@
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "seed:test": "node scripts/seed-test-data.js",
+    "seed:history": "node scripts/seed-history-data.js",
     "check": "node --check src/index.js && node --check src/config/db.js && node --check src/middleware/auth.js && node --check src/models/User.js && node --check src/models/Customer.js && node --check src/models/Property.js && node --check src/models/Loan.js && node --check src/models/Payment.js && node --check src/routes/auth.js && node --check src/routes/loans.js && node --check src/routes/customers.js && node --check src/routes/payments.js && node --check src/routes/dashboard.js && node --check src/routes/uploads.js && node --check src/controllers/auth.js && node --check src/controllers/customers.js && node --check src/controllers/loans.js && node --check src/controllers/payments.js && node --check src/controllers/dashboard.js && node --check src/controllers/uploads.js && node --check src/utils/http.js && node --check src/utils/interest.js && node --check src/utils/testSeed.js && node --check scripts/seed-test-data.js",
     "test": "node --test"
   },

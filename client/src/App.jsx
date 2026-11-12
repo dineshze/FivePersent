@@ -4,11 +4,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
 import { Icon } from './components/Icon.jsx'
 import { Modal } from './components/ui.jsx'
-import { LoanWizard, PaymentForm, LoanDetails, EditLoan, EditCustomer, CustomerDetails } from './components/forms/LoanForms.jsx'
+import { LoanWizard, PaymentForm, LoanDetails, EditLoan, EditCustomer, CustomerDetails } from './components/LoanForms.jsx'
 import { request } from './lib/api.js'
 import { AuthScreen } from './pages/AuthPage.jsx'
 import AppRoutes from './routes/AppRoutes.jsx'
 import { pagePaths } from './routes/pagePaths.js'
+import { LandingPage } from './pages/LandingPage.jsx'
 
 function App() {
   const location = useLocation()
@@ -119,7 +120,11 @@ function App() {
     await loadData()
   }
 
-  if (!token) return <AuthScreen onAuthenticated={authenticate} />
+  if (!token) {
+    if (location.pathname === '/login') return <AuthScreen onAuthenticated={authenticate} />
+    if (location.pathname === '/') return <LandingPage />
+    return <AuthScreen onAuthenticated={authenticate} />
+  }
 
   const nav = ['Dashboard', 'Loans', 'Customers', 'Payments', 'Reports', 'Settings']
   return (
@@ -127,8 +132,8 @@ function App() {
       {sidebarOpen && <button className={tw(tw("sidebar-backdrop"))} aria-label="Close menu" onClick={() => setSidebarOpen(false)} />}
       <aside className={tw(tw(`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`))}>
         <a className={tw(tw("brand"))} href="#" onClick={(event) => { event.preventDefault(); setPage('Dashboard'); setSidebarOpen(false) }}>
-          <span className={tw(tw("brand-mark"))}><span /></span>
-          <span className={tw(tw("brand-name"))}>five<span>percentage</span></span>
+          <span className="brand-mark">5%</span>
+          <span className={tw(tw("brand-name"))}>five<span>percent</span></span>
         </a>
         <div className={tw(tw("workspace-label"))}>WORKSPACE</div>
         <nav className={tw(tw("side-nav"))}>

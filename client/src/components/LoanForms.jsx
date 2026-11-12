@@ -10,6 +10,36 @@ import {
   StatusBadge,
 } from "./ui.jsx";
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[character]);
+}
+
+function printLoanReceipt(loan) {
+  const printWindow = window.open("", "_blank", "width=800,height=900");
+  if (!printWindow) return;
+  const customer = loan.customerId || {};
+  const photo = customer.photo
+    ? `<img class="avatar" src="${escapeHtml(new URL(customer.photo, window.location.origin).href)}" alt="Customer photo">`
+    : `<div class="avatar fallback">${escapeHtml((customer.name || "C").charAt(0).toUpperCase())}</div>`;
+  const rows = [
+    ["Customer", customer.name], ["Phone", customer.phone],
+    ["Principal amount", currency(loan.principalAmount)],
+    ["Interest rate", `${loan.interestRate}% ${loan.interestType === "monthly" ? "monthly" : "annually"}`],
+    ["Start date", shortDate(loan.startDate)], ["Due date", shortDate(loan.dueDate)],
+    ["Duration", loan.duration || "—"],
+    ["Interest accrued", currency(loan.calculation?.accumulatedInterest)],
+    ["Outstanding total", currency(loan.calculation?.totalOutstanding ?? loan.principalAmount)],
+    ["Pledged property", loan.propertyId?.name],
+  ];
+  printWindow.document.write(`<!doctype html><html><head><title>Loan receipt ${escapeHtml(loan.loanId)}</title><meta charset="utf-8"><style>
+    *{box-sizing:border-box}body{margin:0;padding:48px;color:#26372e;font:14px Arial,sans-serif}.receipt{max-width:720px;margin:auto;border:1px solid #dfe8e2;padding:36px}.brand{color:#167b57;font-size:12px;font-weight:bold;letter-spacing:1px;text-transform:uppercase}.title{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #167b57;padding:15px 0 20px}.title h1{font-size:25px;margin:0 0 7px}.muted{color:#738178;font-size:12px}.status{padding:8px 12px;border-radius:20px;background:#edf7f1;color:#167b57;font-weight:bold;text-transform:capitalize}.customer{display:flex;align-items:center;gap:15px;margin:24px 0;padding:16px;background:#f7faf8;border-radius:8px}.avatar{width:64px;height:64px;object-fit:cover;border-radius:50%;border:1px solid #dfe8e2}.fallback{display:grid;place-items:center;background:#eaf6ef;color:#167b57;font-size:24px;font-weight:bold}.customer strong{display:block;font-size:17px;margin-bottom:5px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 25px}.item{padding:12px 0;border-bottom:1px solid #edf1ee}.label{display:block;color:#849087;font-size:10px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}.value{font-weight:600}.notes{margin-top:18px;padding-top:12px;border-top:1px solid #edf1ee}.footer{margin-top:32px;padding-top:15px;border-top:1px solid #dfe8e2;color:#849087;font-size:10px;text-align:center}
+    @media print{body{padding:0}.receipt{border:0;padding:12mm;max-width:none}.customer,.status{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body><article class="receipt"><div class="brand">Five Percent</div><header class="title"><div><h1>Loan receipt</h1><div class="muted">Loan ID: ${escapeHtml(loan.loanId)}</div><div class="muted">Created ${escapeHtml(shortDate(loan.createdAt))}</div></div><span class="status">${escapeHtml(loan.status)}</span></header><section class="customer">${photo}<div><strong>${escapeHtml(customer.name || "Customer")}</strong><span class="muted">${escapeHtml(customer.phone || "")}</span></div></section><section class="grid">${rows.map(([label, value]) => `<div class="item"><span class="label">${escapeHtml(label)}</span><span class="value">${escapeHtml(value || "—")}</span></div>`).join("")}</section>${loan.notes ? `<section class="notes"><span class="label">Notes</span>${escapeHtml(loan.notes)}</section>` : ""}<footer class="footer">Generated on ${escapeHtml(shortDate(new Date()))}</footer></article><script>window.onload=()=>{const image=document.querySelector('.avatar');if(image&&!image.complete){image.onload=image.onerror=()=>window.print()}else{window.print()}}</script></body></html>`);
+  printWindow.document.close();
+}
+
 export function LoanWizard({ customers, token, onSave, onCancel }) {
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -694,9 +724,24 @@ export function LoanDetails({ loan, onClose }) {
         </div>
         <StatusBadge status={loan.status} />
       </div>
+      <div className="flex items-center gap-3 mb-4 p-3 border border-[#e9f0eb] rounded-[7px] bg-white">
+        {loan.customerId?.photo ? (
+          <img
+            src={loan.customerId.photo}
+            alt={`${loan.customerId.name || "Customer"} profile`}
+            className="w-12 h-12 rounded-full object-cover border border-[#e9f0eb]"
+          />
+        ) : (
+          <span className="grid place-items-center w-12 h-12 rounded-full text-[#167b57] bg-[#eaf6ef] text-[18px] font-bold">
+            {(loan.customerId?.name || "C").charAt(0).toUpperCase()}
+          </span>
+        )}
+        <div className="grid gap-1">
+          <strong className="text-[#304239] text-[12px]">{loan.customerId?.name || "Customer"}</strong>
+          <span className="text-[#849087] text-[10px]">{loan.customerId?.phone || "No phone number"}</span>
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-x-3 gap-y-3.5 pt-[5px] pb-[15px]">
-        <Detail label="Customer" value={loan.customerId?.name} />
-        <Detail label="Phone" value={loan.customerId?.phone} />
         <Detail
           label="Interest rate"
           value={`${loan.interestRate}% ${
@@ -731,6 +776,13 @@ export function LoanDetails({ loan, onClose }) {
         </div>
       )}
       <div className="flex justify-between gap-2.5 mt-1.5 pt-3.5 border-t border-[#eff2f0]">
+        <button
+          type="button"
+          className="min-h-[37px] max-[650px]:min-h-[42px] inline-flex items-center justify-center gap-2 px-[13px] py-0 border border-[#e2e8e4] rounded-[6px] text-[10px] max-[650px]:text-[11px] font-semibold text-[#45554c] bg-white transition hover:border-[#cbd9d1] hover:bg-[#fbfdfb] active:translate-y-[1px] cursor-pointer"
+          onClick={() => printLoanReceipt(loan)}
+        >
+          Print receipt
+        </button>
         <button
           type="button"
           className="min-h-[37px] max-[650px]:min-h-[42px] inline-flex items-center justify-center gap-2 px-[13px] py-0 border border-[#e2e8e4] rounded-[6px] text-[10px] max-[650px]:text-[11px] font-semibold text-[#45554c] bg-white transition hover:border-[#cbd9d1] hover:bg-[#fbfdfb] active:translate-y-[1px] cursor-pointer"

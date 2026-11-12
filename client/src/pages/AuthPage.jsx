@@ -35,11 +35,9 @@ export function AuthScreen({ onAuthenticated }) {
   return (
     <div className={tw("auth-page")}>
       <div className={tw("auth-brand")}>
-        <span className={tw("brand-mark")}>
-          <span />
-        </span>
+        <span className="brand-mark">5%</span>
         <span className={tw("brand-name")}>
-          five<span>percentage</span>
+          five<span>percent</span>
         </span>
       </div>
       <div className={tw("auth-layout")}>
@@ -76,7 +74,7 @@ export function AuthScreen({ onAuthenticated }) {
         <section className={tw("auth-panel")}>
           <div className={tw("auth-form-wrap")}>
             <div className={tw("auth-mobile-title")}>
-              Welcome to Five Percentage
+              Welcome to Five Percent
             </div>
             <div className={tw("auth-heading")}>
               <h2>
@@ -174,7 +172,7 @@ export function AuthScreen({ onAuthenticated }) {
             </form>
             <div className={tw("auth-switch")}>
               {mode === "login"
-                ? "New to Five Percentage?"
+                ? "New to Five Percent?"
                 : "Already have an account?"}{" "}
               <button
                 onClick={() => {
@@ -191,7 +189,7 @@ export function AuthScreen({ onAuthenticated }) {
             </div>
           </div>
           <div className={tw("auth-copyright")}>
-            © {new Date().getFullYear()} Five Percentage <span>·</span>{" "}
+              © {new Date().getFullYear()} Five Percent <span>·</span>{" "}
             Thoughtfully made for your business
           </div>
         </section>

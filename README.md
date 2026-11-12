@@ -1,4 +1,4 @@
-# Five Percentage
+# Five Percent
 
 A responsive loan and Girvi management application built with React, Vite, Tailwind CSS, Express, MongoDB, JWT, bcrypt, and optional Cloudinary image uploads.
 
@@ -52,6 +52,17 @@ Remove-Item Env:ALLOW_TEST_SEED
 ```
 
 The script refuses to run in production and requires the explicit `ALLOW_TEST_SEED=true` confirmation. It creates five isolated test accounts, 25 customers and loans per account, pledged properties, and sample payments. Loan and payment dates span the last year. It is safe to rerun: the test accounts and records are upserted, not cleared. Existing seed-account passwords are not changed.
+
+To seed one customer with 37 historical loans dated from January 2021 through the current date, run:
+
+```powershell
+cd server
+$env:ALLOW_TEST_SEED = "true"
+npm run seed:history
+Remove-Item Env:ALLOW_TEST_SEED
+```
+
+This creates or updates the isolated `seed.history@example.test` demo account, 18 customers with local profile illustrations, 37 pledged properties, and 37 loans distributed across those customers. Loan dates run from January 2021 through the current date. It is safe to rerun and does not delete other records. Login with `seed.history@example.test` and password `FivePercentHistory!2026`. Use only with a development or test database.
 
 New test accounts use the password `FivePercentTest!2026`:
 

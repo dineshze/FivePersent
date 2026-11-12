@@ -97,9 +97,17 @@ export function LoansPage({
                     </td>
                     <td>
                       <div className={tw("table-person")}>
-                        <span className={tw("person-avatar")}>
-                          {(loan.customerId?.name || "C").charAt(0)}
-                        </span>
+                        {loan.customerId?.photo ? (
+                          <img
+                            className={tw("person-avatar person-avatar-photo")}
+                            src={loan.customerId.photo}
+                            alt={`${loan.customerId.name || "Customer"} profile`}
+                          />
+                        ) : (
+                          <span className={tw("person-avatar")}>
+                            {(loan.customerId?.name || "C").charAt(0)}
+                          </span>
+                        )}
                         <div>
                           <strong>{loan.customerId?.name || "Customer"}</strong>
                           <small>{loan.customerId?.phone || "—"}</small>

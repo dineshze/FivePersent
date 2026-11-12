@@ -3,5 +3,6 @@ dist/
 .env
 .env.*
 !.env.example
+!client/.env
 npm-debug.log*
 coverage/
