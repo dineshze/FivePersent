@@ -1,7 +1,6 @@
 import { tw } from './lib/tailwindStyles.js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import './App.css'
 import { Icon } from './components/Icon.jsx'
 import { Modal } from './components/ui.jsx'
 import { LoanWizard, PaymentForm, LoanDetails, EditLoan, EditCustomer, CustomerDetails } from './components/LoanForms.jsx'
@@ -131,9 +130,9 @@ function App() {
     <div className={tw(tw("app-shell"))}>
       {sidebarOpen && <button className={tw(tw("sidebar-backdrop"))} aria-label="Close menu" onClick={() => setSidebarOpen(false)} />}
       <aside className={tw(tw(`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`))}>
-        <a className={tw(tw("brand"))} href="#" onClick={(event) => { event.preventDefault(); setPage('Dashboard'); setSidebarOpen(false) }}>
-          <span className="brand-mark">5%</span>
-          <span className={tw(tw("brand-name"))}>five<span>percent</span></span>
+        <a className="mb-12 ml-[7px] flex h-[33px] items-center gap-2.5 text-[#17251f] no-underline" href="#" onClick={(event) => { event.preventDefault(); setPage('Dashboard'); setSidebarOpen(false) }}>
+          <span className="grid size-[30px] shrink-0 place-items-center rounded-[9px] bg-emerald-700 text-[11px] font-extrabold leading-none tracking-[-0.7px] text-white">5%</span>
+          <span className="text-[15px] font-bold leading-none tracking-[-0.5px] text-[#17251f]">five<span className="mt-1 block text-[9px] font-semibold uppercase leading-none tracking-[1.65px] text-[#84918a]">percent</span></span>
         </a>
         <div className={tw(tw("workspace-label"))}>WORKSPACE</div>
         <nav className={tw(tw("side-nav"))}>
