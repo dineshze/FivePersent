@@ -5,4 +5,5 @@ export const pagePaths = {
   Payments: "/payments",
   Reports: "/reports",
   Settings: "/settings",
+  Notifications: "/notifications",
 };

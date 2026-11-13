@@ -5,6 +5,7 @@ import { CustomersPage } from "../pages/CustomersPage.jsx";
 import { PaymentsPage } from "../pages/PaymentsPage.jsx";
 import { ReportsPage } from "../pages/ReportsPage.jsx";
 import { SettingsPage } from "../pages/SettingsPage.jsx";
+import { NotificationsPage } from "../pages/NotificationsPage.jsx";
 import { pagePaths } from "./pagePaths.js";
 
 export default function AppRoutes({
@@ -82,6 +83,10 @@ export default function AppRoutes({
       <Route
         path={pagePaths.Settings}
         element={<SettingsPage user={user} onLogout={onLogout} />}
+      />
+      <Route
+        path={pagePaths.Notifications}
+        element={<NotificationsPage />}
       />
       <Route path="*" element={<Navigate to={pagePaths.Dashboard} replace />} />
     </Routes>

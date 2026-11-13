@@ -1,5 +1,6 @@
 import { tw } from '../lib/tailwindStyles.js'
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "../components/Icon.jsx";
 import {
   EmptyState,
@@ -184,23 +185,43 @@ export function LoansPage({
 
 export function RowMenu({ loan, onView, onEdit, onDelete, onPay }) {
   const [open, setOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+
+  function toggleMenu(event) {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const menuHeight = 140;
+    const menuWidth = 130;
+    const openAbove = window.innerHeight - rect.bottom < menuHeight + 8;
+    setMenuPosition({
+      top: Math.max(8, openAbove ? rect.top - menuHeight - 4 : rect.bottom + 4),
+      left: Math.max(8, Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8)),
+    });
+    setOpen(true);
+  }
+
   return (
     <div className={tw("row-menu-wrap")}>
       <button
         className={tw("row-menu-button")}
-        onClick={() => setOpen(!open)}
+        onClick={toggleMenu}
         aria-label="Loan actions"
       >
         <Icon name="more" size={19} />
       </button>
-      {open && (
+      {open && createPortal(
         <>
           <button
             className={tw("menu-dismiss")}
             onClick={() => setOpen(false)}
             aria-label="Close actions"
+            style={{ zIndex: 59 }}
           />
-          <div className={tw("row-menu")}>
+          <div className={tw("row-menu")} style={{ position: "fixed", zIndex: 60, top: menuPosition.top, left: menuPosition.left, right: "auto" }}>
             <button
               onClick={() => {
                 setOpen(false);
@@ -235,7 +256,8 @@ export function RowMenu({ loan, onView, onEdit, onDelete, onPay }) {
               Delete loan
             </button>
           </div>
-        </>
+        </>,
+        document.body,
       )}
     </div>
   );

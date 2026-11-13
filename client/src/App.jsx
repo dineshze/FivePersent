@@ -148,7 +148,7 @@ function App() {
             <span className={tw(tw("help-icon"))}><Icon name="shield" size={17} /></span>
             <div><strong>Your data is private</strong><p>Only you can see your records.</p></div>
           </div>
-          <button className={tw(tw("profile-button"))} onClick={() => setPage('Settings')}>
+          <button className={tw(tw("profile-button"))} onClick={() => { setPage('Settings'); setSidebarOpen(false) }}>
             <span className={tw(tw("avatar"))}>{(user?.name || 'U').charAt(0).toUpperCase()}</span>
             <span className={tw(tw("profile-name"))}><strong>{user?.name || 'Your account'}</strong><small>{user?.email || 'Account settings'}</small></span>
             <Icon name="more" size={18} />
@@ -159,11 +159,11 @@ function App() {
       <nav className={tw(tw("mobile-tabbar"))} aria-label="Main navigation">
         {['Dashboard', 'Loans', 'Customers', 'Payments', 'More'].map((item) => {
           const icon = item === 'More' ? 'menu' : item.toLowerCase()
-          const active = item === 'More' ? page === 'Reports' || page === 'Settings' : page === item
+          const active = item === 'More' ? page === 'Reports' || page === 'Settings' || page === 'Notifications' : page === item
           return (
             <button
               key={item}
-              className={tw(tw(`mobile-tab ${active ? 'mobile-tab-active' : ''}`))}
+              className={tw(tw(`mobile-tab ${active ? 'mobile-tab-active' : 'mobile-tab-inactive'}`))}
               aria-current={active ? 'page' : undefined}
               aria-expanded={item === 'More' ? sidebarOpen : undefined}
               onClick={() => item === 'More' ? setSidebarOpen(true) : setPage(item)}
@@ -182,8 +182,15 @@ function App() {
           <div className={tw(tw("topbar-actions"))}>
             <button className={tw(tw("search-shortcut"))} onClick={() => setPage('Loans')}><Icon name="search" size={17} /><span>Search loans...</span><kbd>⌘ K</kbd></button>
             <span className={tw(tw("topbar-divider"))} />
-            <button className={tw(tw("icon-button notification-button"))} aria-label="Notifications"><Icon name="bell" size={19} /><i /></button>
-            <span className={tw(tw("avatar avatar-small"))}>{(user?.name || 'U').charAt(0).toUpperCase()}</span>
+            <button className={tw(tw("icon-button notification-button"))} onClick={() => { setPage('Notifications'); setSidebarOpen(false) }} aria-label="Notifications"><Icon name="bell" size={19} /></button>
+            <button
+              className="grid size-[29px] place-items-center rounded-full border-0 bg-[#e8f1eb] text-[11px] font-bold text-[#3e6e55]"
+              onClick={() => setPage('Settings')}
+              aria-label="Open settings"
+              title="Settings"
+            >
+              {(user?.name || 'U').charAt(0).toUpperCase()}
+            </button>
           </div>
         </header>
 
